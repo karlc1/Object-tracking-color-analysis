@@ -5,6 +5,12 @@ import org.opencv.core.Mat;
 import org.opencv.highgui.VideoCapture;
 import org.opencv.*;
 
+/**
+ * Reads and analysis images
+ * @author Karl
+ *
+ */
+
 public class Main {
 	
 	public static boolean WEBCAM_MODE = true;
@@ -21,7 +27,7 @@ public class Main {
 	
 	
 	public static void main(String[] args) {
-	}
+	}  
 	
 	
 	/**
