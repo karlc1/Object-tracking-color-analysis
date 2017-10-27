@@ -26,7 +26,7 @@ public class CamVideo {
 
 	public static Mat getImage() {
 		Mat temp = new Mat();
-		videoCapture.retrieve(temp);
+		videoCapture.read(temp);
 		return temp;
 	}
 }

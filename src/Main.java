@@ -52,6 +52,7 @@ public class Main {
 	public Mat getNextImage() {
 		if (WEBCAM_MODE) {
 			return CamVideo.getImage();
+			
 		}
 
 		else {

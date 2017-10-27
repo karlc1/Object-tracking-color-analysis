@@ -12,20 +12,27 @@ import org.opencv.core.Mat;
 public class Display {
 	
 	static JFrame imageFrame = new JFrame();
+	static JLabel lbl = new JLabel();
 	
-	
-	
-	public static void displayImage(Image img2) {
-		// BufferedImage img=ImageIO.read(new File("/HelloOpenCV/lena.png"));
-		ImageIcon icon = new ImageIcon(img2);
+	static{
 		imageFrame.setLayout(new FlowLayout());
-		imageFrame.setSize(img2.getWidth(null) + 50, img2.getHeight(null) + 50);
+		imageFrame.setSize(400, 400);
 		imageFrame.setVisible(true);
 		imageFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JLabel lbl = new JLabel();
-		lbl.setIcon(icon);
 		imageFrame.add(lbl);
+		imageFrame.setResizable(false);
+	}
+
+
+	public static void displayImage(Image img2) {
+		
+		if (imageFrame.getSize().getHeight() != img2.getHeight(null) + 50 || 
+				imageFrame.getSize().getWidth() != img2.getWidth(null) + 50){
+			imageFrame.setSize(img2.getWidth(null)+50, img2.getHeight(null)+50); 
+		}
+		
+		ImageIcon icon = new ImageIcon(img2);		
+		lbl.setIcon(icon);
 
 	}
 
