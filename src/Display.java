@@ -12,28 +12,64 @@ import org.opencv.core.Mat;
 public class Display {
 	
 	static JFrame imageFrame = new JFrame();
-	static JLabel lbl = new JLabel();
+	static JLabel imageContainer = new JLabel();
 	
 	static{
 		imageFrame.setLayout(new FlowLayout());
 		imageFrame.setSize(400, 400);
-		imageFrame.setVisible(true);
 		imageFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		imageFrame.add(lbl);
+		imageFrame.add(imageContainer);
 		imageFrame.setResizable(false);
+		imageFrame.setVisible(false);
+
 	}
 
 
-	public static void displayImage(Image img2) {
+	/**
+	 * Display image object as image
+	 * @param img
+	 */
+	public static void displayImage(Image img) {
 		
-		if (imageFrame.getSize().getHeight() != img2.getHeight(null) + 50 || 
-				imageFrame.getSize().getWidth() != img2.getWidth(null) + 50){
-			imageFrame.setSize(img2.getWidth(null)+50, img2.getHeight(null)+50); 
+		if (imageFrame == null){
+			imageFrame = new JFrame();
 		}
 		
-		ImageIcon icon = new ImageIcon(img2);		
-		lbl.setIcon(icon);
-
+		if (!imageFrame.isVisible()){
+			imageFrame.setVisible(true);
+		}
+		
+		if (imageFrame.getSize().getHeight() != img.getHeight(null) + 50 || 
+				imageFrame.getSize().getWidth() != img.getWidth(null) + 50){
+			imageFrame.setSize(img.getWidth(null)+50, img.getHeight(null)+50); 
+		}
+		
+		ImageIcon icon = new ImageIcon(img);		
+		imageContainer.setIcon(icon);
+	}
+	
+	/**
+	 * Display Mat object as image 
+	 * @param img
+	 */
+	public static void displayImage(Mat img) {
+		
+		if (imageFrame == null){
+			imageFrame = new JFrame();
+		}
+		
+		if (!imageFrame.isVisible()){
+			imageFrame.setVisible(true);
+		}
+		
+		if (imageFrame.getSize().getHeight() != img.height() + 50 || 
+				imageFrame.getSize().getWidth() != img.width() + 50){
+			imageFrame.setSize(img.width()+50, img.height()+50); 
+		}
+		
+		Image convImg = mat2BufferedImage(img);
+		ImageIcon icon = new ImageIcon(convImg);		
+		imageContainer.setIcon(icon);
 	}
 
 	/**

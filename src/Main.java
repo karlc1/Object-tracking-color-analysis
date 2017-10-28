@@ -1,13 +1,11 @@
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
+import org.opencv.imgproc.*;
 import org.opencv.core.Mat;
 import org.opencv.highgui.VideoCapture;
+import org.opencv.video.BackgroundSubtractorMOG2;
 
-import java.awt.FlowLayout;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -26,6 +24,7 @@ public class Main {
 
 	public static boolean WEBCAM_MODE = true;
 
+	// Always load library first 
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 	}
@@ -34,14 +33,16 @@ public class Main {
 		
 		System.out.println("Program started..");
 		
-		while(true){
-			
-			Display.displayImage(Display.mat2BufferedImage(CamVideo.getImage()));
-		}
-	}
-
-	public static void main(String[] args) {
-		new Main();
+		
+		Mat image1 = getNextImage();		
+		Mat grayImage1 = new Mat(image1.height(), image1.width(), CvType.CV_8UC3);
+		
+		Imgproc.cvtColor(image1, grayImage1, Imgproc.COLOR_RGB2GRAY);
+		
+//		while(true){
+//			
+//			Display.displayImage(Display.mat2BufferedImage(CamVideo.getImage()));
+//		}
 	}
 
 	/**
@@ -49,17 +50,26 @@ public class Main {
 	 * 
 	 * @return image from specified source
 	 */
-	public Mat getNextImage() {
+	public static Mat getNextImage() {
+		
+		Mat nextImage = null;
+		
 		if (WEBCAM_MODE) {
-			return CamVideo.getImage();
-			
+			nextImage = CamVideo.getImage();			
 		}
 
-		else {
-			System.err.println("getNextImage not specified correctly");
-			System.exit(0);
-			return null;
+		if (nextImage != null){
+			return nextImage;
 		}
+		
+		System.err.println("getNextImage not specified correctly");
+		System.exit(0);
+		return null; // Should never reach
+		
+	}
+	
+	public static void main(String[] args) {
+		new Main();
 	}
 }
 
