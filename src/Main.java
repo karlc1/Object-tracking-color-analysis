@@ -39,6 +39,8 @@ public class Main {
 		
 		Imgproc.cvtColor(image1, grayImage1, Imgproc.COLOR_RGB2GRAY);
 		
+		Display.displayImage(grayImage1);
+		
 //		while(true){
 //			
 //			Display.displayImage(Display.mat2BufferedImage(CamVideo.getImage()));
