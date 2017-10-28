@@ -3,7 +3,9 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.imgproc.*;
 import org.opencv.core.Mat;
+import org.opencv.core.Size;
 import org.opencv.highgui.VideoCapture;
+import org.opencv.video.BackgroundSubtractorMOG;
 import org.opencv.video.BackgroundSubtractorMOG2;
 
 
@@ -30,11 +32,11 @@ public class Main {
 
 	public Main() {
 		
-		while (true){
-			getDiff();
-		}
+//		while (true){
+//			getDiff();
+//		}
 		
-		//backgroundSubtractionTest();
+		backgroundSubtractionTest();
 		
 	}
 	
@@ -44,16 +46,19 @@ public class Main {
 		Mat diffImage = new Mat(newImage.height(), newImage.width(), CvType.CV_8UC3);
 		Mat thresImage = new Mat(newImage.height(), newImage.width(), CvType.CV_8UC3);
 
+		int threshold = 40;
+		int blurSize = 10;
 
 		Imgproc.cvtColor(newImage, newImageGray, Imgproc.COLOR_RGB2GRAY);		
 		
 		if (lastImage != null){
 			
 			Core.absdiff(newImageGray, lastImage, diffImage);
-			Imgproc.threshold(diffImage, thresImage, 40, 255, Imgproc.THRESH_BINARY);
+			Imgproc.threshold(diffImage, thresImage, threshold, 255, Imgproc.THRESH_BINARY);
 			
-			//Imgproc.blur(thresImage, thresImage, 
-			
+			Imgproc.blur(thresImage, thresImage, new Size(blurSize, blurSize));
+			Imgproc.threshold(thresImage, thresImage, threshold, 255, Imgproc.THRESH_BINARY);
+
 		
 
 		}
@@ -72,7 +77,7 @@ public class Main {
 		int history = 500;
 		float varThreshold = 1024;
 		boolean detectShadows = false;		
-		BackgroundSubtractorMOG2 mog = new BackgroundSubtractorMOG2(history, varThreshold, detectShadows);
+		BackgroundSubtractorMOG mog = new BackgroundSubtractorMOG();
 		
 		while (true){
 			
