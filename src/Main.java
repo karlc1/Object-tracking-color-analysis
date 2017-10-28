@@ -7,6 +7,7 @@ import org.opencv.highgui.VideoCapture;
 import org.opencv.video.BackgroundSubtractorMOG2;
 
 
+
 import org.opencv.*;
 
 /**
@@ -33,18 +34,25 @@ public class Main {
 			getDiff();
 		}
 		
+		//backgroundSubtractionTest();
+		
 	}
 	
 	private static void getDiff(){
 		Mat newImage = getNextImage();		
 		Mat newImageGray = new Mat(newImage.height(), newImage.width(), CvType.CV_8UC3);
 		Mat diffImage = new Mat(newImage.height(), newImage.width(), CvType.CV_8UC3);
+		Mat thresImage = new Mat(newImage.height(), newImage.width(), CvType.CV_8UC3);
+
 
 		Imgproc.cvtColor(newImage, newImageGray, Imgproc.COLOR_RGB2GRAY);		
 		
 		if (lastImage != null){
 			
 			Core.absdiff(newImageGray, lastImage, diffImage);
+			Imgproc.threshold(diffImage, thresImage, 40, 255, Imgproc.THRESH_BINARY);
+			
+			//Imgproc.blur(thresImage, thresImage, 
 			
 		
 
@@ -52,7 +60,31 @@ public class Main {
 		
 		lastImage = newImageGray;
 		
-		Display.displayImage(diffImage);
+		Display.displayImage(thresImage);
+		
+	}
+	
+	
+	static Mat mask = new Mat();
+	private static void backgroundSubtractionTest(){
+		
+		// Test variables
+		int history = 500;
+		float varThreshold = 1024;
+		boolean detectShadows = false;		
+		BackgroundSubtractorMOG2 mog = new BackgroundSubtractorMOG2(history, varThreshold, detectShadows);
+		
+		while (true){
+			
+			mog.apply(getNextImage(), mask);
+			
+			Display.displayImage(mask);
+			
+		}
+		
+		
+		
+		
 		
 	}
 
