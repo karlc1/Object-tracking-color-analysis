@@ -11,8 +11,8 @@ import org.opencv.core.Mat;
 
 public class Display {
 	
-	static JFrame imageFrame = new JFrame();
-	static JLabel imageContainer = new JLabel();
+	private static JFrame imageFrame = new JFrame();
+	private static JLabel imageContainer = new JLabel();
 	
 	static{
 		imageFrame.setLayout(new FlowLayout());

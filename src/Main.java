@@ -7,10 +7,6 @@ import org.opencv.highgui.VideoCapture;
 import org.opencv.video.BackgroundSubtractorMOG2;
 
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
 import org.opencv.*;
 
 /**
@@ -22,7 +18,9 @@ import org.opencv.*;
 
 public class Main {
 
-	public static boolean WEBCAM_MODE = true;
+	
+	public static boolean WEBCAM_MODE = true; 	// for local debugging
+	private static Mat lastImage = null;		// for storing previous image 
 
 	// Always load library first 
 	static {
@@ -31,20 +29,31 @@ public class Main {
 
 	public Main() {
 		
-		System.out.println("Program started..");
+		while (true){
+			getDiff();
+		}
 		
+	}
+	
+	private static void getDiff(){
+		Mat newImage = getNextImage();		
+		Mat newImageGray = new Mat(newImage.height(), newImage.width(), CvType.CV_8UC3);
+		Mat diffImage = new Mat(newImage.height(), newImage.width(), CvType.CV_8UC3);
+
+		Imgproc.cvtColor(newImage, newImageGray, Imgproc.COLOR_RGB2GRAY);		
 		
-		Mat image1 = getNextImage();		
-		Mat grayImage1 = new Mat(image1.height(), image1.width(), CvType.CV_8UC3);
+		if (lastImage != null){
+			
+			Core.absdiff(newImageGray, lastImage, diffImage);
+			
 		
-		Imgproc.cvtColor(image1, grayImage1, Imgproc.COLOR_RGB2GRAY);
+
+		}
 		
-		Display.displayImage(grayImage1);
+		lastImage = newImageGray;
 		
-//		while(true){
-//			
-//			Display.displayImage(Display.mat2BufferedImage(CamVideo.getImage()));
-//		}
+		Display.displayImage(diffImage);
+		
 	}
 
 	/**
@@ -71,6 +80,7 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
+		System.out.println("Program started..");
 		new Main();
 	}
 }
