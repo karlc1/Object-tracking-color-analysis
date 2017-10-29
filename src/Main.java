@@ -74,7 +74,7 @@ public class Main {
 			
 			ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();    
 			
-		    Imgproc.findContours(thresImage, contours, new Mat(), Imgproc.RETR_EXTERNAL,Imgproc.CHAIN_APPROX_SIMPLE);
+//		    Imgproc.findContours(thresImage, contours, new Mat(), Imgproc.RETR_EXTERNAL,Imgproc.CHAIN_APPROX_SIMPLE);
 		    
 		    
 		    boolean objectDetected = false;
@@ -86,6 +86,7 @@ public class Main {
 		    if (objectDetected){
 		    	
 		    	for(int i=0; i< contours.size();i++){
+		    		
 		            if (Imgproc.contourArea(contours.get(i)) > 50 ){
 		                Rect rect = Imgproc.boundingRect(contours.get(i));
 		                Core.rectangle(newImage, new Point(rect.x,rect.height), new Point(rect.y,rect.width),new Scalar(0,0,255));
