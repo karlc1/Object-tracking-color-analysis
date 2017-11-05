@@ -50,16 +50,30 @@ public class Main {
 		
 	}
 	
+	static Mat baseImage = new Mat();
+	static boolean baseInitialized = false; 
+	
 	private static void getDiff(){
+		
+		if (!baseInitialized){
+			Mat imgForBase = getNextImage();
+			baseImage = new Mat(imgForBase.height(), imgForBase.width(), CvType.CV_8UC3);
+			Imgproc.cvtColor(imgForBase, baseImage, Imgproc.COLOR_RGB2GRAY);		
+			baseInitialized = true; 
+		}
+		
+		
 		Mat newImage = getNextImage();		
 		Mat newImageGray = new Mat(newImage.height(), newImage.width(), CvType.CV_8UC3);
 		Mat diffImage = new Mat(newImage.height(), newImage.width(), CvType.CV_8UC3);
 		Mat thresImage = new Mat(newImage.height(), newImage.width(), CvType.CV_8UC3);
 
-		int threshold = 20;
-		int blurSize = 50;
+		int threshold = 50;
+		int blurSize = 10;
 
-		Imgproc.cvtColor(newImage, newImageGray, Imgproc.COLOR_RGB2GRAY);		
+		Mat filterImg = new Mat();
+		Imgproc.bilateralFilter(newImage, filterImg, 7, 150, 150);
+		Imgproc.cvtColor(filterImg, newImageGray, Imgproc.COLOR_RGB2GRAY);		
 		
 		if (lastImage != null){
 			
@@ -72,32 +86,54 @@ public class Main {
 			Imgproc.threshold(thresImage, thresImage, threshold, 255, Imgproc.THRESH_BINARY);
 			
 			
-			ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();    
-			
-//		    Imgproc.findContours(thresImage, contours, new Mat(), Imgproc.RETR_EXTERNAL,Imgproc.CHAIN_APPROX_SIMPLE);
+//			ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();    
+//			
+////		    Imgproc.findContours(thresImage, contours, new Mat(), Imgproc.RETR_EXTERNAL,Imgproc.CHAIN_APPROX_SIMPLE);
+//		    
+//		    
+//		    boolean objectDetected = false;
+//		    
+//		    if (contours.size() > 0){
+//		    	objectDetected = true;
+//		    }
 		    
-		    
-		    boolean objectDetected = false;
-		    
-		    if (contours.size() > 0){
-		    	objectDetected = true;
-		    }
-		    
-		    if (objectDetected){
-		    	
-		    	for(int i=0; i< contours.size();i++){
-		    		
-		            if (Imgproc.contourArea(contours.get(i)) > 50 ){
-		                Rect rect = Imgproc.boundingRect(contours.get(i));
-		                Core.rectangle(newImage, new Point(rect.x,rect.height), new Point(rect.y,rect.width),new Scalar(0,0,255));
-		            }
-		    	}
-		    }
+//		    if (objectDetected){
+//		    	
+//		    	for(int i=0; i< contours.size();i++){
+//		    		
+//		            if (Imgproc.contourArea(contours.get(i)) > 50 ){
+//		                Rect rect = Imgproc.boundingRect(contours.get(i));
+//		                Core.rectangle(newImage, new Point(rect.x,rect.height), new Point(rect.y,rect.width),new Scalar(0,0,255));
+//		            }
+//		    	}
+//		    }
 		}
 		
-		lastImage = newImageGray;
 		
-		Display.displayImage(thresImage);
+		
+
+		
+		boolean noMotion = true; 
+		
+		for (int col = 0; col < thresImage.height(); col+=32){
+			for (int row = 0; row < thresImage.height(); row+=32){
+				double[] valArr = (thresImage.get(row, col));
+				double var = valArr[0];
+				if (var != 0){
+					noMotion = false; 
+				}
+			}
+		}
+		
+		
+		lastImage= newImageGray;
+		if (lastImage == null || noMotion){
+			lastImage = newImageGray;
+		}
+		//lastImage = newImageGray;
+		System.out.println("MOTION: " + !noMotion);
+		
+		Display.displayImage(diffImage);
 		
 	}
 	

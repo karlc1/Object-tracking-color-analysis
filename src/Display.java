@@ -21,7 +21,8 @@ public class Display {
 		imageFrame.add(imageContainer);
 		imageFrame.setResizable(false);
 		imageFrame.setVisible(false);
-
+		
+		
 	}
 
 
