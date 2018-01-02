@@ -106,7 +106,7 @@ public class Main {
 			List<Rect> rectList = foundLocations.toList();
 			int index = 0;
 			
-			_
+			
 			for (final Rect rect : rectList) {
 				rectPoint1.x = rect.x;
 				rectPoint1.y = rect.y;
