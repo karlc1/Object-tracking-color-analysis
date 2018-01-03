@@ -49,7 +49,7 @@ public class Main {
 			// getDiff();
 			// newTest();
 			//colorDiff();
-			HOGExperiment();
+			colorDiff();
 		}
 
 		// backgroundSubtractionTest();
@@ -138,7 +138,7 @@ public class Main {
 			// Imgproc.cvtColor(baseImage, baseImage, Imgproc.COLOR_RGB2HSV);
 		}
 
-		Mat newImage = getNextImage();
+		Mat newImage = DataSet.getNextImage();
 		// Imgproc.cvtColor(newImage, newImage, Imgproc.COLOR_RGB2HSV);
 
 		if (baseImage != null) {
