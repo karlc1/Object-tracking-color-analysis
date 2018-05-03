@@ -9,20 +9,26 @@ import javax.swing.JLabel;
 
 import org.opencv.core.Mat;
 
+
+/**
+ * This class is used to convert images between mat objects and images, and display them
+ * Only used for debug and presentation
+ * @author Karl
+ *
+ */
+
 public class Display {
 	
-	private static JFrame imageFrame = new JFrame();
-	private static JLabel imageContainer = new JLabel();
+	private  JFrame imageFrame = new JFrame();
+	private  JLabel imageContainer = new JLabel();
 	
-	static{
+	public Display() {
 		imageFrame.setLayout(new FlowLayout());
 		imageFrame.setSize(400, 400);
 		imageFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		imageFrame.add(imageContainer);
 		imageFrame.setResizable(false);
 		imageFrame.setVisible(false);
-		
-		
 	}
 
 
@@ -30,7 +36,7 @@ public class Display {
 	 * Display image object as image
 	 * @param img
 	 */
-	public static void displayImage(Image img) {
+	public void displayImage(Image img) {
 		
 		if (imageFrame == null){
 			imageFrame = new JFrame();
@@ -53,7 +59,7 @@ public class Display {
 	 * Display Mat object as image 
 	 * @param img
 	 */
-	public static void displayImage(Mat img) {
+	public void displayImage(Mat img) {
 		
 		if (imageFrame == null){
 			imageFrame = new JFrame();
